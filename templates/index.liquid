@@ -1,0 +1,1372 @@
+<!--
+  ============================================================
+    THE WRITING STUDIO — Homepage Template
+    File: templates/index.liquid (or sections/main-index.liquid)
+
+    SHOPIFY SETUP INSTRUCTIONS:
+    1. Go to Online Store > Themes > Edit Code
+    2. Under Templates, click "index.liquid" (or create it)
+    3. Paste this entire file
+    4. Replace YOUR_CALENDLY_URL with your actual Calendly link
+    5. Replace product handle references with your real product handles
+    6. Save and preview
+
+    FONTS: Loaded via Google Fonts in layout/theme.liquid
+    Add this to your <head> in theme.liquid:
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+  ============================================================
+-->
+
+<style>
+  /* ── CSS CUSTOM PROPERTIES ─────────────────────────────────── */
+  :root {
+
+    --yellow:     #E3FD01;
+    --black:      #000000;
+    --white:      #FFFFFF;
+    --off-white:  #F5F5F0;
+    --gray-light: #EEEEEA;
+    --gray-mid:   #AAAAAA;
+    --gray-dark:  #444444;
+
+    --font-display: 'DM Serif Display', Georgia, serif;
+    --font-ui:      'Syne', sans-serif;
+    --font-body:    'DM Mono', 'Courier New', monospace;
+
+    --max-w: 1200px;
+    --pad:   clamp(1.5rem, 5vw, 4rem);
+    --radius: 2px;
+  }
+
+  /* ── RESET ──────────────────────────────────────────────────── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--font-body); background: var(--white); color: var(--black); overflow-x: hidden; }
+  img  { max-width: 100%; display: block; }
+  a    { color: inherit; text-decoration: none; }
+  button { cursor: pointer; border: none; background: none; font-family: inherit; }
+
+  /* ── UTILITY ────────────────────────────────────────────────── */
+  .tws-container {
+    width: 100%;
+    max-width: var(--max-w);
+    margin: 0 auto;
+    padding: 0 var(--pad);
+  }
+
+  .tws-label {
+    font-family: var(--font-body);
+    font-size: 0.65rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gray-mid);
+  }
+
+  .tws-label--blue { color: var(--black); }
+  .tws-label--yellow { color: var(--yellow); }
+
+  /* ── BUTTONS ────────────────────────────────────────────────── */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-ui);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.85rem 1.75rem;
+    border-radius: var(--radius);
+    transition: all 0.18s ease;
+    white-space: nowrap;
+  }
+
+  .btn--primary {
+    background: var(--black);
+    color: var(--white);
+    border: 2px solid var(--black);
+  }
+  .btn--primary:hover {
+    background: var(--black);
+    border-color: var(--black);
+    transform: translateY(-1px);
+  }
+
+  .btn--yellow {
+    background: var(--yellow);
+    color: var(--black);
+    border: 2px solid var(--yellow);
+  }
+  .btn--yellow:hover {
+    background: var(--black);
+    color: var(--yellow);
+    border-color: var(--black);
+    transform: translateY(-1px);
+  }
+
+  .btn--outline {
+    background: transparent;
+    color: var(--black);
+    border: 2px solid var(--black);
+  }
+  .btn--outline:hover {
+    background: var(--black);
+    color: var(--white);
+    transform: translateY(-1px);
+  }
+
+  .btn--outline-white {
+    background: transparent;
+    color: var(--white);
+    border: 2px solid var(--white);
+  }
+  .btn--outline-white:hover {
+    background: var(--white);
+    color: var(--black);
+  }
+
+
+  /* ── VSL VIDEO ───────────────────────────────────────────────── */
+  .tws-vsl {
+    background: var(--white);
+    padding: 5rem 0 4rem;
+    border-bottom: 1px solid var(--gray-light);
+  }
+
+  .tws-vsl__heading {
+    font-family: var(--font-display);
+    font-size: clamp(1.6rem, 3vw, 2.6rem);
+    font-weight: 400;
+    line-height: 1.2;
+    color: var(--black);
+    max-width: 720px;
+    margin: 0 auto 2.5rem;
+    text-align: center;
+  }
+
+  .tws-vsl__embed {
+    position: relative;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .tws-vsl__footer {
+    text-align: center;
+    margin-top: 2rem;
+  }
+
+  .tws-vsl__placeholder {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: var(--black);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .tws-vsl__placeholder::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      -45deg,
+      transparent,
+      transparent 30px,
+      rgba(227,253,1,0.04) 30px,
+      rgba(227,253,1,0.04) 31px
+    );
+  }
+
+  .tws-vsl__play {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    position: relative;
+    z-index: 1;
+    transition: transform 0.2s;
+  }
+
+  .tws-vsl__play:hover { transform: scale(1.04); }
+
+  .tws-vsl__play-icon {
+    width: 64px;
+    height: 64px;
+    background: var(--yellow);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--black);
+    flex-shrink: 0;
+  }
+
+  .tws-vsl__play-label {
+    display: block;
+    font-family: var(--font-ui);
+    font-size: 0.85rem;
+    font-weight: 800;
+    color: var(--white);
+    letter-spacing: 0.04em;
+    margin-bottom: 0.25rem;
+  }
+
+  .tws-vsl__play-duration {
+    display: block;
+    font-size: 0.7rem;
+    color: var(--gray-mid);
+    letter-spacing: 0.08em;
+  }
+
+
+
+  /* ── NAV ────────────────────────────────────────────────────── */
+  .tws-nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: var(--black);
+    border-bottom: 1px solid #1a1a1a;
+    transition: all 0.3s ease;
+  }
+
+  .tws-nav__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+    padding: 0 var(--pad);
+    max-width: var(--max-w);
+    margin: 0 auto;
+  }
+
+  .tws-nav__logo {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .tws-nav__mark {
+    width: 36px;
+    height: 36px;
+    background: var(--yellow);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 3px;
+    flex-shrink: 0;
+  }
+
+  .tws-nav__cursors {
+    display: flex;
+    gap: 5px;
+  }
+
+  .tws-nav__cursor {
+    width: 5px;
+    height: 9px;
+    border: 1.5px solid var(--black);
+    border-radius: 1px;
+  }
+
+  .tws-nav__wordmark {
+    font-family: var(--font-ui);
+    font-size: 0.8rem;
+    font-weight: 800;
+    color: var(--white);
+    letter-spacing: 0.04em;
+  }
+
+  .tws-nav__links {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    list-style: none;
+  }
+
+  .tws-nav__links a {
+    font-family: var(--font-body);
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gray-mid);
+    transition: color 0.15s;
+  }
+  .tws-nav__links a:hover { color: var(--white); }
+
+  .tws-nav__cta {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .tws-nav__hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    padding: 4px;
+  }
+  .tws-nav__hamburger span {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: var(--white);
+    transition: all 0.2s;
+  }
+
+  /* ── MOBILE NAV ─────────────────────────────────────────────── */
+  .tws-mobile-nav {
+    display: none;
+    position: fixed;
+    top: 64px; left: 0; right: 0;
+    background: var(--black);
+    border-bottom: 1px solid #1a1a1a;
+    z-index: 99;
+    padding: 1.5rem var(--pad);
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .tws-mobile-nav.open { display: flex; }
+  .tws-mobile-nav a {
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gray-mid);
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #1a1a1a;
+    transition: color 0.15s;
+  }
+  .tws-mobile-nav a:hover { color: var(--white); }
+
+  /* ── MARQUEE ─────────────────────────────────────────────────── */
+  .tws-marquee {
+    background: var(--yellow);
+    padding: 0.85rem 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  .tws-marquee__track {
+    display: inline-flex;
+    gap: 0;
+    animation: marquee 48s linear infinite;
+  }
+
+  .tws-marquee__track span {
+    font-family: var(--font-ui);
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--black);
+    padding: 0 2rem;
+  }
+
+  .tws-marquee__track span::after {
+    content: '·';
+    margin-left: 2rem;
+  }
+
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+
+  /* ── SERVICES ────────────────────────────────────────────────── */
+  .tws-services {
+    padding: 6rem 0;
+    background: var(--white);
+  }
+
+  .tws-section-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 3.5rem;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .tws-section-title {
+    color: var(--black);
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 3.5vw, 3.2rem);
+    font-weight: 400;
+    line-height: 1.1;
+    color: var(--black);
+  }
+
+  .tws-section-title em {
+    font-style: italic;
+    color: var(--black);
+  }
+
+  .tws-services__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    border: 1px solid var(--black);
+  }
+
+  .tws-service-card {
+    padding: 2.5rem 2rem;
+    border-right: 1px solid var(--black);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .tws-service-card:last-child { border-right: none; }
+
+  .tws-service-card::before {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 4px;
+    background: var(--black);
+    transform: scaleX(0);
+    transition: transform 0.25s ease;
+    transform-origin: left;
+  }
+
+  .tws-service-card:hover::before { transform: scaleX(1); }
+  .tws-service-card:hover { background: var(--off-white); }
+
+  .tws-service-card__num {
+    font-family: var(--font-body);
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    color: var(--black);
+    text-transform: uppercase;
+  }
+
+  .tws-service-card__name {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: var(--black);
+    line-height: 1.1;
+  }
+
+  .tws-service-card__desc {
+    font-size: 0.8rem;
+    line-height: 1.8;
+    color: var(--gray-dark);
+    flex: 1;
+  }
+
+  .tws-service-card__price {
+    font-family: var(--font-ui);
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--black);
+    letter-spacing: 0.06em;
+  }
+
+  .tws-service-card__link {
+    font-family: var(--font-body);
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--black);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    transition: gap 0.15s;
+  }
+  .tws-service-card__link:hover { gap: 0.7rem; }
+
+  /* ── THESIS ──────────────────────────────────────────────────── */
+  .tws-thesis {
+    background: var(--black);
+    padding: 6rem 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .tws-thesis::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 40%;
+    height: 100%;
+    background: var(--black);
+    clip-path: polygon(15% 0, 100% 0, 100% 100%, 0% 100%);
+    opacity: 0.12;
+  }
+
+  .tws-thesis__inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+  }
+
+  .tws-thesis__quote {
+    font-family: var(--font-display);
+    font-size: clamp(1.8rem, 3vw, 3rem);
+    font-weight: 400;
+    font-style: italic;
+    color: var(--white);
+    line-height: 1.2;
+  }
+
+  .tws-thesis__quote span { color: var(--yellow); }
+
+  .tws-thesis__right {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .tws-thesis__body {
+    font-size: 0.85rem;
+    line-height: 1.9;
+    color: var(--gray-mid);
+  }
+
+  .tws-thesis__pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .tws-thesis__pill {
+    font-family: var(--font-body);
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.4rem 0.9rem;
+    border: 1px solid #333;
+    color: var(--gray-mid);
+    border-radius: var(--radius);
+  }
+
+  /* ── BOOK A CALL ─────────────────────────────────────────────── */
+  .tws-booking {
+    padding: 6rem 0;
+    background: var(--yellow);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .tws-booking::after {
+    content: '';
+    position: absolute;
+    bottom: 0; right: 0;
+    width: 300px;
+    height: 300px;
+    background: var(--black);
+    border-radius: 50%;
+    transform: translate(40%, 40%);
+    opacity: 0.06;
+  }
+
+  .tws-booking__inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+  }
+
+  .tws-booking__title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 3.5vw, 3.5rem);
+    color: var(--black);
+    line-height: 1.1;
+    margin-bottom: 1.25rem;
+  }
+
+  .tws-booking__title em {
+    font-style: italic;
+    color: var(--black);
+  }
+
+  .tws-booking__body {
+    font-size: 0.85rem;
+    line-height: 1.9;
+    color: rgba(0,0,0,0.65);
+    margin-bottom: 2rem;
+  }
+
+  .tws-booking__details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .tws-booking__detail {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.8rem;
+    color: rgba(0,0,0,0.75);
+  }
+
+  .tws-booking__detail-icon {
+    width: 28px;
+    height: 28px;
+    background: rgba(0,0,0,0.08);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    flex-shrink: 0;
+  }
+
+  .tws-booking__widget {
+    background: var(--white);
+    padding: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .tws-booking__widget-title {
+    font-family: var(--font-ui);
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--black);
+  }
+
+  .tws-booking__widget-body {
+    font-size: 0.82rem;
+    line-height: 1.7;
+    color: var(--gray-dark);
+  }
+
+  .tws-booking__widget-items {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .tws-booking__widget-item {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.78rem;
+    color: var(--gray-dark);
+  }
+
+  .tws-booking__widget-item::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background: var(--black);
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* ── WHY US ──────────────────────────────────────────────────── */
+  .tws-why {
+    padding: 6rem 0;
+    background: var(--white);
+  }
+
+  .tws-why__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    border: 1px solid var(--black);
+  }
+
+  .tws-why__card {
+    padding: 2.5rem 2rem;
+    border-right: 1px solid var(--black);
+    border-bottom: 1px solid var(--black);
+    position: relative;
+  }
+
+  .tws-why__card:nth-child(3n) { border-right: none; }
+  .tws-why__card:nth-last-child(-n+3) { border-bottom: none; }
+
+  .tws-why__num {
+    font-family: var(--font-display);
+    font-size: 3rem;
+    color: var(--gray-mid);
+    line-height: 1;
+    margin-bottom: 1rem;
+    transition: color 0.2s;
+  }
+
+  .tws-why__card:hover .tws-why__num { color: var(--black); }
+
+
+  .tws-why__card-title {
+    font-family: var(--font-ui);
+    font-size: 0.85rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    color: var(--black);
+    margin-bottom: 0.75rem;
+  }
+
+  .tws-why__card-body {
+    font-size: 0.8rem;
+    line-height: 1.8;
+    color: var(--gray-dark);
+  }
+
+  /* ── STUDIO STATS ────────────────────────────────────────────── */
+  .tws-stats {
+    padding: 4rem 0;
+    background: var(--black);
+  }
+
+  .tws-stats__grid {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+  }
+
+  .tws-stats__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem 4rem;
+    text-align: center;
+  }
+
+  .tws-stats__num {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 400;
+    color: var(--yellow);
+    line-height: 1;
+  }
+
+  .tws-stats__label {
+    font-family: var(--font-body);
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gray-mid);
+  }
+
+  .tws-stats__divider {
+    width: 1px;
+    height: 60px;
+    background: #222;
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 600px) {
+    .tws-stats__grid { flex-direction: column; }
+    .tws-stats__divider { width: 40px; height: 1px; }
+    .tws-stats__item { padding: 1rem 2rem; }
+  }
+
+  /* ── FOOTER ──────────────────────────────────────────────────── */
+  .tws-footer {
+    background: var(--black);
+    border-top: 1px solid #1a1a1a;
+    padding: 4rem 0 2rem;
+  }
+
+  .tws-footer__top {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 3rem;
+    padding-bottom: 3rem;
+    border-bottom: 1px solid #1a1a1a;
+    margin-bottom: 2rem;
+  }
+
+  .tws-footer__brand p {
+    font-size: 0.78rem;
+    line-height: 1.8;
+    color: var(--gray-mid);
+    margin-top: 1rem;
+    max-width: 280px;
+  }
+
+  .tws-footer__logo {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .tws-footer__logo-mark {
+    width: 40px;
+    height: 40px;
+    background: var(--yellow);
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+  }
+
+  .tws-footer__logo-cursors { display: flex; gap: 6px; }
+  .tws-footer__logo-cursor {
+    width: 6px;
+    height: 11px;
+    border: 1.5px solid var(--black);
+    border-radius: 1px;
+  }
+
+  .tws-footer__logo-text {
+    font-family: var(--font-ui);
+    font-size: 0.85rem;
+    font-weight: 800;
+    color: var(--white);
+  }
+
+  .tws-footer__col-title {
+    font-family: var(--font-body);
+    font-size: 0.62rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--gray-mid);
+    margin-bottom: 1.25rem;
+  }
+
+  .tws-footer__links {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .tws-footer__links a {
+    font-size: 0.8rem;
+    color: #555;
+    transition: color 0.15s;
+  }
+  .tws-footer__links a:hover { color: var(--white); }
+
+  .tws-footer__bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .tws-footer__copy {
+    font-size: 0.72rem;
+    color: #333;
+    letter-spacing: 0.06em;
+  }
+
+  .tws-footer__legal {
+    display: flex;
+    gap: 1.5rem;
+  }
+  .tws-footer__legal a {
+    font-size: 0.72rem;
+    color: #333;
+    transition: color 0.15s;
+  }
+  .tws-footer__legal a:hover { color: var(--gray-mid); }
+
+  /* ── SCROLL REVEAL ───────────────────────────────────────────── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── RESPONSIVE ──────────────────────────────────────────────── */
+  @media (max-width: 900px) {
+    .tws-nav__links,
+    .tws-nav__cta .btn--outline-white { display: none; }
+    .tws-nav__hamburger { display: flex; }
+
+      padding: 4rem var(--pad);
+      padding-top: calc(64px + 3rem);
+      min-height: 100vh;
+      justify-content: flex-end;
+    }
+
+    .tws-services__grid { grid-template-columns: 1fr 1fr; }
+    .tws-service-card { border-bottom: 1px solid var(--black); }
+    .tws-service-card:nth-child(even) { border-right: none; }
+
+    .tws-thesis__inner { grid-template-columns: 1fr; gap: 2.5rem; }
+    .tws-booking__inner { grid-template-columns: 1fr; gap: 3rem; }
+    .tws-why__grid { grid-template-columns: 1fr 1fr; }
+    .tws-footer__top { grid-template-columns: 1fr 1fr; gap: 2rem; }
+  }
+
+  @media (max-width: 600px) {
+    .tws-services__grid { grid-template-columns: 1fr; }
+    .tws-service-card { border-right: none !important; }
+    .tws-why__grid { grid-template-columns: 1fr; }
+    .tws-why__card { border-right: none !important; }
+
+    .tws-footer__top { grid-template-columns: 1fr; }
+    .btn { width: 100%; justify-content: center; }
+  }
+</style>
+
+<!-- ── NAVIGATION ─────────────────────────────────────────────── -->
+<nav class="tws-nav" id="tws-nav">
+  <div class="tws-nav__inner">
+    <a href="{{ routes.root_url }}" class="tws-nav__logo">
+      <div class="tws-nav__mark">
+        <div class="tws-nav__cursors">
+          <div class="tws-nav__cursor"></div>
+          <div class="tws-nav__cursor"></div>
+        </div>
+      </div>
+      <span class="tws-nav__wordmark">The Writing Studio</span>
+    </a>
+
+    <ul class="tws-nav__links">
+      <li><a href="#services">Services</a></li>
+      <li><a href="{{ routes.all_products_collection_url }}">Shop</a></li>
+      <li><a href="/pages/about">About</a></li>
+    </ul>
+
+    <div class="tws-nav__cta">
+      <a href="#booking" class="btn btn--yellow" style="padding:0.65rem 1.25rem;font-size:0.68rem;">Book a Call</a>
+    </div>
+
+    <button class="tws-nav__hamburger" id="tws-hamburger" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- ── MOBILE NAV ─────────────────────────────────────────────── -->
+<div class="tws-mobile-nav" id="tws-mobile-nav">
+  <a href="#services">Services</a>
+  <a href="#booking">Book a Call</a>
+  <a href="/pages/about">About</a>
+  <a href="#booking" class="btn btn--yellow" style="margin-top:0.5rem;">Book a Call →</a>
+</div>
+
+<!-- ── VSL VIDEO ──────────────────────────────────────────────── -->
+<section class="tws-vsl">
+  <div class="tws-container">
+    <h1 class="tws-vsl__heading">
+      The Writing Studio helps businesses operate efficiently through professional document writing and management.
+    </h1>
+    <div class="tws-vsl__embed">
+      <!-- REPLACE src WITH YOUR VIDEO EMBED URL -->
+      <!-- YouTube: https://www.youtube.com/embed/YOUR_VIDEO_ID -->
+      <!-- Vimeo:   https://player.vimeo.com/video/YOUR_VIDEO_ID -->
+      <!-- Loom:    https://www.loom.com/embed/YOUR_VIDEO_ID -->
+      <div class="tws-vsl__placeholder" id="tws-vsl-placeholder">
+        <div
+          class="tws-vsl__play"
+          id="tws-vsl-play"
+          onclick="document.getElementById('tws-vsl-placeholder').style.display='none'; document.getElementById('tws-vsl-frame').style.display='block';"
+        >
+          <div class="tws-vsl__play-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <polygon points="6,4 20,12 6,20" fill="currentColor"/>
+            </svg>
+          </div>
+          <div class="tws-vsl__play-text">
+            <span class="tws-vsl__play-label">Watch the Overview</span>
+            <span class="tws-vsl__play-duration">About 60 seconds</span>
+          </div>
+        </div>
+      </div>
+      <iframe
+        id="tws-vsl-frame"
+        src="YOUR_VIDEO_EMBED_URL"
+        style="display:none;width:100%;aspect-ratio:16/9;border:none;"
+        allow="autoplay; fullscreen; picture-in-picture"
+        allowfullscreen
+        title="The Writing Studio — Overview"
+      >
+      </iframe>
+    </div>
+    <div class="tws-vsl__footer">
+      <a href="#booking" class="btn btn--primary">Book a Call →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── MARQUEE ────────────────────────────────────────────────── -->
+<div class="tws-marquee" aria-hidden="true">
+  <div class="tws-marquee__track">
+    <span>SOPs</span><span>User Guides</span><span>Policies & Procedures</span> <span>Process Documentation</span
+    ><span>Documentation Audits</span> <span>Technical Writing</span><span>Instruction Manuals</span>
+    <span>Laboratories</span><span>Manufacturing</span><span>Healthcare</span> <span>SaaS</span
+    ><span>Government Contracting</span> <span>SOPs</span><span>User Guides</span><span>Policies & Procedures</span>
+    <span>Process Documentation</span><span>Documentation Audits</span> <span>Technical Writing</span
+    ><span>Instruction Manuals</span> <span>Laboratories</span><span>Manufacturing</span><span>Healthcare</span>
+    <span>SaaS</span><span>Government Contracting</span>
+  </div>
+</div>
+
+<!-- ── SERVICES ───────────────────────────────────────────────── -->
+<section class="tws-services" id="services">
+  <div class="tws-container">
+    <div class="tws-section-header reveal">
+      <div>
+        <p class="tws-label" style="margin-bottom:0.75rem;">What We Do</p>
+        <h2 class="tws-section-title">
+          Services built for<br>
+          <em>where you are</em> right now.
+        </h2>
+      </div>
+      <a href="/pages/services" class="btn btn--outline">See Full Details →</a>
+    </div>
+
+    <div class="tws-services__grid reveal">
+      <div class="tws-service-card">
+        <span class="tws-service-card__num">01</span>
+        <h3 class="tws-service-card__name">Docs Audit</h3>
+        <p class="tws-service-card__desc">
+          Find out what's working, what's broken, and what's missing — before it costs you. Full review, gap analysis,
+          and a prioritized recommendations report.
+        </p>
+        <a href="/pages/services#audit" class="tws-service-card__link">Learn more →</a>
+      </div>
+
+      <div class="tws-service-card">
+        <span class="tws-service-card__num">02</span>
+        <h3 class="tws-service-card__name">Docs Tune-Up</h3>
+        <p class="tws-service-card__desc">
+          Your documentation exists. Now let's make it actually work. Revisions, plain language improvements, and
+          formatting standardization for up to 5 documents.
+        </p>
+        <a href="/pages/services#tuneup" class="tws-service-card__link">Learn more →</a>
+      </div>
+
+      <div class="tws-service-card">
+        <span class="tws-service-card__num">03</span>
+        <h3 class="tws-service-card__name">Docs Starter</h3>
+        <p class="tws-service-card__desc">
+          You know you need documentation. Let's build it right the first time. Up to 3 new documents created from
+          scratch via SME interviews and discovery.
+        </p>
+        <a href="/pages/services#starter" class="tws-service-card__link">Learn more →</a>
+      </div>
+
+      <div class="tws-service-card">
+        <span class="tws-service-card__num">04</span>
+        <h3 class="tws-service-card__name">Docs Pro</h3>
+        <p class="tws-service-card__desc">
+          Enterprise-grade documentation for businesses serious about scaling. Full documentation system, strategy,
+          style guide, and a dedicated partner contact.
+        </p>
+        <a href="/pages/services#pro" class="tws-service-card__link">Learn more →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── THESIS ─────────────────────────────────────────────────── -->
+<section class="tws-thesis">
+  <div class="tws-container">
+    <div class="tws-thesis__inner">
+      <blockquote class="tws-thesis__quote reveal">
+        "Documentation decisions are <span>business decisions.</span>"
+      </blockquote>
+
+      <div class="tws-thesis__right reveal">
+        <p class="tws-label tws-label--yellow">Our Approach</p>
+        <p class="tws-thesis__body">
+          We treat documentation like infrastructure — sturdy, easy to navigate, and built to support real work. Every
+          word we write is built around what matters most: clarity for your team, and clarity for your customers.
+        </p>
+        <p class="tws-thesis__body">
+          Poor documentation leads to confusion, wasted time, frustrated customers, and lost revenue. Great
+          documentation empowers your team, delights your customers, and scales your business efficiently.
+        </p>
+        <div class="tws-thesis__pills">
+          <span class="tws-thesis__pill">Manufacturing</span>
+          <span class="tws-thesis__pill">Laboratories</span>
+          <span class="tws-thesis__pill">Healthcare</span>
+          <span class="tws-thesis__pill">Technology</span>
+          <span class="tws-thesis__pill">Gov't Contracting</span>
+          <span class="tws-thesis__pill">Health & Safety</span>
+          <span class="tws-thesis__pill">Small Business</span>
+        </div>
+        <a href="#booking" class="btn btn--yellow">Book a Call →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── BOOK A CALL ────────────────────────────────────────────── -->
+<section class="tws-booking" id="booking">
+  <div class="tws-container">
+    <div class="tws-booking__inner">
+      <div class="reveal">
+        <p class="tws-label" style="margin-bottom:1rem;">Consultation Call</p>
+        <h2 class="tws-booking__title">
+          Let's talk about<br>
+          your <em>documentation.</em>
+        </h2>
+        <p class="tws-booking__body">
+          No pressure, no pitch. Just 30 minutes to understand where your documentation is, where it needs to be, and
+          whether we're the right fit to get you there.
+        </p>
+        <div class="tws-booking__details">
+          <div class="tws-booking__detail">
+            <div class="tws-booking__detail-icon">⏱</div>
+            <span>15 minutes via video call</span>
+          </div>
+          <div class="tws-booking__detail">
+            <div class="tws-booking__detail-icon">✓</div>
+            <span>No commitment required</span>
+          </div>
+          <div class="tws-booking__detail">
+            <div class="tws-booking__detail-icon">→</div>
+            <span>Walk away with clarity, regardless of whether we work together</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="tws-booking__widget reveal">
+        <p class="tws-booking__widget-title">What We'll Cover</p>
+        <div class="tws-booking__widget-items">
+          <div class="tws-booking__widget-item">Your current documentation situation</div>
+          <div class="tws-booking__widget-item">What's missing or broken</div>
+          <div class="tws-booking__widget-item">Which service tier fits your needs</div>
+          <div class="tws-booking__widget-item">Timeline and investment overview</div>
+          <div class="tws-booking__widget-item">Your questions answered</div>
+        </div>
+        <p class="tws-booking__widget-body">
+          After the call, you'll receive a written summary and a formal proposal within 2 business days if you'd like to
+          move forward.
+        </p>
+        <!-- CALENDLY INLINE WIDGET -->
+        <!-- Replace YOUR_CALENDLY_URL with your actual Calendly link -->
+        <!-- e.g. https://calendly.com/thewritingstudio/30min -->
+        <a
+          href="YOUR_CALENDLY_URL"
+          class="btn btn--primary"
+          target="_blank"
+          rel="noopener"
+          style="width:100%;justify-content:center;"
+        >
+          Schedule Your Free Call →
+        </a>
+        <p style="font-size:0.7rem;color:var(--gray-mid);text-align:center;letter-spacing:0.06em;">
+          Powered by Calendly · Instant confirmation
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── WHY US ─────────────────────────────────────────────────── -->
+<section class="tws-why">
+  <div class="tws-container">
+    <div class="tws-section-header reveal">
+      <div>
+        <p class="tws-label" style="margin-bottom:0.75rem;">Why The Writing Studio</p>
+        <h2 class="tws-section-title">
+          What makes us<br>
+          <em>different.</em>
+        </h2>
+      </div>
+    </div>
+
+    <div class="tws-why__grid">
+      {% assign why_items = 'Your Team Stops Guessing,Faster Onboarding,Fewer Support Tickets,No Knowledge Bottlenecks,Audit & Compliance Ready,Docs That Scale With You'
+        | split: ','
+      %}
+      {% assign why_descs = "We audit your SOPs and internal processes so your documentation reflects how work is actually done, leading to consistent execution across your team.,We rebuild your training and process documentation so new hires can follow clear steps and get up to speed quickly.,We improve your customer-facing guides and help docs so users can find answers without contacting your team.,We capture critical knowledge from your team so your business doesn't rely on one person to function properly.,We update compliance and operational documentation so your business is prepared for audits and external reviews.,We create systems that evolve with your business so your documentation doesn't become outdated again."
+        | split: ','
+      %}
+
+      {% for i in (0..5) %}
+        <div class="tws-why__card reveal">
+          <div class="tws-why__num">0{{ i | plus: 1 }}</div>
+          <h3 class="tws-why__card-title">{{ why_items[i] }}</h3>
+          <p class="tws-why__card-body">{{ why_descs[i] }}</p>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ── INDUSTRIES SCROLL ──────────────────────────────────────── -->
+<div class="tws-industries" aria-hidden="true">
+  <div class="tws-industries__track">
+    {% assign industries = 'Manufacturing,Biopharma & Laboratories,Technology & SaaS,Healthcare,Government Contracting,Food & Hospitality,Small Business,Insurance,Pharmaceuticals,Higher Education'
+      | split: ','
+    %}
+    {% for ind in industries %}
+      <div class="tws-industries__item">
+        <div class="tws-industries__dot"></div>
+        <span class="tws-industries__name">{{ ind }}</span>
+      </div>
+    {% endfor %}
+    {% for ind in industries %}
+      <div class="tws-industries__item">
+        <div class="tws-industries__dot"></div>
+        <span class="tws-industries__name">{{ ind }}</span>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+<!-- ── FOOTER ─────────────────────────────────────────────────── -->
+<footer class="tws-footer">
+  <div class="tws-container">
+    <div class="tws-footer__top">
+      <div class="tws-footer__brand">
+        <div class="tws-footer__logo">
+          <div class="tws-footer__logo-mark">
+            <div class="tws-footer__logo-cursors">
+              <div class="tws-footer__logo-cursor"></div>
+              <div class="tws-footer__logo-cursor"></div>
+            </div>
+          </div>
+          <span class="tws-footer__logo-text">The Writing Studio</span>
+        </div>
+        <p>
+          Helping businesses operate efficiently through professional document writing and management. Salt Lake City,
+          Utah + nationwide.
+        </p>
+      </div>
+
+      <div>
+        <p class="tws-footer__col-title">Services</p>
+        <ul class="tws-footer__links">
+          <li><a href="/pages/services#audit">Docs Audit</a></li>
+          <li><a href="/pages/services#tuneup">Docs Tune-Up</a></li>
+          <li><a href="/pages/services#starter">Docs Starter</a></li>
+          <li><a href="/pages/services#pro">Docs Pro</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <p class="tws-footer__col-title">Resources</p>
+        <ul class="tws-footer__links">
+          <li><a href="/blogs/news">Blog</a></li>
+          <li><a href="/pages/about">About</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <p class="tws-footer__col-title">Connect</p>
+        <ul class="tws-footer__links">
+          <li><a href="https://instagram.com/thewritingstudio" target="_blank" rel="noopener">Instagram</a></li>
+          <li><a href="https://linkedin.com/company/thewritingstudio" target="_blank" rel="noopener">LinkedIn</a></li>
+          <li><a href="YOUR_CALENDLY_URL" target="_blank" rel="noopener">Schedule a Call</a></li>
+          <li><a href="mailto:hello@thewritingstudio.io">Email Us</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="tws-footer__bottom">
+      <p class="tws-footer__copy">© {{ 'now' | date: '%Y' }} The Writing Studio, LLC · All Rights Reserved</p>
+      <nav class="tws-footer__legal">
+        <a href="/policies/privacy-policy">Privacy Policy</a>
+        <a href="/policies/terms-of-service">Terms of Service</a>
+        <a href="/policies/refund-policy">Refund Policy</a>
+      </nav>
+    </div>
+  </div>
+</footer>
+
+<!-- ── JAVASCRIPT ─────────────────────────────────────────────── -->
+<script>
+  (function () {
+    'use strict';
+
+    // ── HAMBURGER MENU ──────────────────────────────────────────
+    const hamburger = document.getElementById('tws-hamburger');
+    const mobileNav = document.getElementById('tws-mobile-nav');
+
+    if (hamburger && mobileNav) {
+      hamburger.addEventListener('click', function () {
+        const isOpen = mobileNav.classList.toggle('open');
+        hamburger.setAttribute('aria-expanded', isOpen);
+      });
+
+      // Close mobile nav when a link is clicked
+      mobileNav.querySelectorAll('a').forEach(function (link) {
+        link.addEventListener('click', function () {
+          mobileNav.classList.remove('open');
+        });
+      });
+    }
+
+    // ── NAV SCROLL EFFECT ───────────────────────────────────────
+    const nav = document.getElementById('tws-nav');
+    if (nav) {
+      window.addEventListener(
+        'scroll',
+        function () {
+          if (window.scrollY > 40) {
+            nav.style.boxShadow = '0 4px 24px rgba(0,0,0,0.4)';
+          } else {
+            nav.style.boxShadow = 'none';
+          }
+        },
+        { passive: true }
+      );
+    }
+
+    // ── SMOOTH SCROLL FOR ANCHOR LINKS ─────────────────────────
+    document.querySelectorAll('a[href^="#"]').forEach(function (anchor) {
+      anchor.addEventListener('click', function (e) {
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          e.preventDefault();
+          const offset = 80; // nav height
+          const top = target.getBoundingClientRect().top + window.scrollY - offset;
+          window.scrollTo({ top: top, behavior: 'smooth' });
+        }
+      });
+    });
+
+    // ── SCROLL REVEAL ───────────────────────────────────────────
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible');
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
+      );
+
+      document.querySelectorAll('.reveal').forEach(function (el) {
+        observer.observe(el);
+      });
+    } else {
+      // Fallback: show everything if IntersectionObserver not supported
+      document.querySelectorAll('.reveal').forEach(function (el) {
+        el.classList.add('visible');
+      });
+    }
+
+    // ── STAGGERED REVEAL FOR GRIDS ──────────────────────────────
+    document
+      .querySelectorAll('.tws-services__grid .tws-service-card, .tws-why__grid .tws-why__card')
+      .forEach(function (card, i) {
+        card.style.transitionDelay = i * 0.08 + 's';
+      });
+  })();
+</script>
